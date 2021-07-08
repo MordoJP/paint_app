@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Paint app</title>
+    <link rel="stylesheet" href="style/style.css">
+</head>
+<body>
+    <div class="container">
+        <canvas id="canv"></canvas>
+        <div class="tools">
+            <button type="button" class="button undo">Отменить</button>
+            <button type="button" class="button clear">Очистить</button>
+            <div class="color-field" style="background: darkred"></div>
+            <div class="color-field" style="background: darkblue"></div>
+            <div class="color-field" style="background: darkgreen"></div>
+            <div class="color-field" style="background: yellow"></div>
+            <div class="color-field" style="background: black"></div>
+            <input type="color" class="color-picker">
+            <input type="range" min="1" max="50" class="pen-size">
+
+        </div>
+    </div>
+<script src="js/paint.js"></script>
+</body>
+</html>

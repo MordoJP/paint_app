@@ -1,0 +1,87 @@
+body {
+    margin: 0 auto;
+    padding: 30px;
+    overflow: hidden;
+    background: #3c4043;
+}
+
+h1 {
+    font-size: 2em;
+    margin: 0.67em 0;
+}
+
+a {
+    text-decoration: none;
+    background-color: transparent;
+}
+
+h3 {
+    margin: 25px 0;
+    font-family: "Raleway-Regular", sans-serif;
+    font-weight: lighter;
+}
+
+p {
+    font-family: Tahoma, serif;
+    font-size: 16px;
+}
+
+button:focus, a:focus {
+    outline: none;
+    animation: box-shadow 0.45s ease;
+}
+
+button,
+input {
+    overflow: visible;
+}
+
+.tools {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    margin-top: 15px;
+}
+
+.color-field {
+    height: 40px;
+    width: 40px;
+    min-height:40px;
+    min-width: 40px;
+    cursor: pointer;
+    display: inline-block;
+    box-sizing: border-box;
+    border-radius: 50%;
+    border: 2px solid white;
+    align-self: center;
+    margin: 0 10px;
+}
+
+.button {
+    align-self: center;
+    width: 100px;
+    height: 40px;
+    border: 2px solid white;
+    cursor: pointer;
+    color: white;
+    background: #2c2c2c;
+    font: 15px Tahoma bold;
+    margin: 0 10px;
+}
+
+.color-picker {
+    align-self: center;
+    min-width: 50px;
+    margin: 0 10px;
+    height: 50px;
+}
+
+.pen-size {
+    align-self: center;
+    margin: 0 10px;
+}
+
+canvas {
+    box-shadow: -1px 1px 6px 4px black;
+    cursor: pointer;
+}

@@ -85,3 +85,7 @@ canvas {
     box-shadow: -1px 1px 6px 4px black;
     cursor: pointer;
 }
+
+.text-header {
+    color: white;
+}

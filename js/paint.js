@@ -10,8 +10,10 @@ ctx.fillStyle = startBackgroundColor;
 ctx.fillRect(0, 0, canv.width, canv.height);
 
 let drawColor = 'black';
-let drawWidth = '2';
+let drawWidth = '3';
 let drawing = false;
+let brushNow = 'round';
+let brushBlur = 0;
 
 let restoreArray = [];
 let index = -1;
@@ -20,6 +22,12 @@ let switchColor = document.querySelectorAll('.color-field');
 for (let i = 0; i < switchColor.length; i++){
     switchColor[i].addEventListener('click', changeColor);
 }
+
+let brushR = document.querySelector('.brush-round');
+brushR.addEventListener('click', brushRound);
+
+let brushS = document.querySelector('.brush-square');
+brushS.addEventListener('click', brushSquare);
 
 let inputColor = document.querySelector('.color-picker');
 inputColor.addEventListener('input', changeChooseColor);
@@ -33,12 +41,14 @@ cleaner.addEventListener('click', clearCanvas);
 let undo = document.querySelector('.undo');
 undo.addEventListener('click', undoLast);
 
+let bluring = document.querySelector('.blur');
+bluring.addEventListener('input', changeBlur);
+
 canv.addEventListener('mousedown', start, false);
 canv.addEventListener('mousemove', draw, false);
 
 canv.addEventListener('mouseup', stop, false);
 canv.addEventListener('mouseout', stop, false);
-
 
 function start(e) {
     drawing = true;
@@ -47,13 +57,19 @@ function start(e) {
     e.preventDefault(); // посмотреть что это?
 }
 
+
 function draw(e) {
     if (drawing === true){
         ctx.lineTo(e.clientX - canv.offsetLeft, e.clientY - canv.offsetTop);
         ctx.strokeStyle = drawColor;
         ctx.lineWidth = drawWidth;
-        ctx.lineCap = 'round';
-        ctx.lineJoin = 'round';
+        ctx.lineCap = brushNow;
+        ctx.lineJoin = brushNow;
+        ctx.shadowBlur = brushBlur;
+        ctx.shadowColor = drawColor;
+
+        // ctx.globalAlpha = '0.01';
+        ctx.filter = 'blur(' + brushBlur/2 + 'px)';
         ctx.stroke ();
     }
 }
@@ -64,6 +80,7 @@ function stop(e) {
         ctx.closePath();
         drawing = false;
     }
+    e.preventDefault();
 
     if (e.type !== 'mouseout'){
         restoreArray.push(ctx.getImageData(0, 0, canv.width, canv.height));
@@ -99,4 +116,16 @@ function undoLast() {
         restoreArray.pop();
         ctx.putImageData(restoreArray[index], 0, 0);
     }
+}
+
+ function brushRound() {
+    brushNow = 'round';
+ }
+
+function brushSquare() {
+    brushNow = 'square';
+}
+
+function changeBlur(e) {
+    brushBlur = e.target.value;
 }

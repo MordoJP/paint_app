@@ -1,27 +1,32 @@
 "use strict"
 
+//основное поле и его начальные данные
 const canv = document.querySelector('#canv');
 canv.width = window.innerWidth - 60;
 canv.height = 500;
 
-let ctx = canv.getContext ('2d');
-let startBackgroundColor = 'white';
+//контекст и его начальные стили
+const ctx = canv.getContext ('2d');
+const startBackgroundColor = 'white';
 ctx.fillStyle = startBackgroundColor;
 ctx.fillRect(0, 0, canv.width, canv.height);
 
+//основные переменные с начальными параметрами
 let drawColor = 'black';
 let drawWidth = '3';
 let drawing = false;
 let brushNow = 'round';
 let brushBlur = 0;
 let choosedTool = 'brush';
+let brushOpacity = 1;
 let startX;
 let startY;
 
 let restoreArray = [];
 let index = -1;
 
-let start = e => {
+//функция начала рисования
+const start = e => {
     drawing = true;
     ctx.beginPath();
     ctx.moveTo(e.clientX - canv.offsetLeft, e.clientY - canv.offsetTop);
@@ -31,13 +36,15 @@ let start = e => {
     e.preventDefault();
 }
 
-let draw = e => {
+//функция рисования
+const draw = e => {
     if (drawing === true){
+        ctx.filter = `blur(${brushBlur/2}px)`;
         ctx.strokeStyle = drawColor;
         ctx.lineWidth = drawWidth;
+        ctx.globalAlpha = brushOpacity;
         ctx.lineCap = brushNow;
         ctx.lineJoin = brushNow;
-        ctx.filter = `blur(${brushBlur/2}px)`;
         if (choosedTool === 'brush'){
             ctx.lineTo(e.clientX - canv.offsetLeft, e.clientY - canv.offsetTop);
             ctx.stroke ();
@@ -49,11 +56,16 @@ let draw = e => {
             ctx.lineTo(e.clientX - canv.offsetLeft, startY);
             ctx.lineTo(startX, startY);
             ctx.closePath();
+        } else if (choosedTool === 'draw circle'){
+            ctx.beginPath();
+            ctx.arc(startX, startY, Math.sqrt((startX - (e.clientX - canv.offsetLeft))**2 + (startY - (e.clientY - canv.offsetTop))**2), 0, Math.PI * 2, false);
+            ctx.closePath();
         }
     }
 }
 
-let stop = e => {
+//функция остановки рисования
+const stop = e => {
     if (drawing){
         ctx.stroke();
         ctx.closePath();
@@ -67,23 +79,30 @@ let stop = e => {
     }
 }
 
-let changeColor = e => drawColor = e.target.style.background;
+//функции сменить цвет
+const changeColor = e => drawColor = e.target.style.background;
 
-let changeChooseColor = e => drawColor = e.target.value;
+const changeChooseColor = e => drawColor = e.target.value;
 
-let changeSize = e => drawWidth = e.target.value;
+//функции изменить размер
+const changeSize = e => drawWidth = e.target.value;
 
+//функция регулировки прозрачности
+const changeOpacity = e => brushOpacity = (100 - e.target.value)/100;
 
-let clearCanvas = () => {
+//функция очистки всего
+const clearCanvas = () => {
     ctx.fillStyle = startBackgroundColor;
     ctx.filter = `blur(0px)`;
+    ctx.globalAlpha = 1;
     ctx.clearRect(0, 0, canv.width, canv.height);
     ctx.fillRect(0, 0, canv.width, canv.height);
     restoreArray = [];
     index = -1;
 }
 
-let undoLast = () => {
+//функция возврата к предыдущему
+const undoLast = () => {
     if (index <= 0) {
         clearCanvas()
     } else {
@@ -93,51 +112,65 @@ let undoLast = () => {
     }
 }
 
-let brushRound = () => {
+//функция круглой кисти
+const brushRound = () => {
     brushNow = 'round';
     choosedTool = 'brush';
  }
 
-let brushSquare = () => {
+//функция квадратной кисти
+const brushSquare = () => {
     brushNow = 'square';
     choosedTool = 'brush';
 }
 
-let changeBlur = e => brushBlur = e.target.value;
+//функция изменения размытия
+const changeBlur = e => brushBlur = e.target.value;
 
-let drawSquareFunction = () => choosedTool = 'draw square';
+//функция рисования квадрата
+const drawSquareFunction = () => choosedTool = 'draw square';
 
-let switchColor = document.querySelectorAll('.color-field');
+//функция рисования круга
+const drawCircle = () => choosedTool = 'draw circle';
+
+//присваивание функций к кнопкам
+const switchColor = document.querySelectorAll('.color-field');
 for (let i = 0; i < switchColor.length; i++){
     switchColor[i].addEventListener('click', changeColor);
 }
 
-let brushR = document.querySelector('.brush-round');
+const brushR = document.querySelector('.brush-round');
 brushR.addEventListener('click', brushRound);
 
-let brushS = document.querySelector('.brush-square');
+const brushS = document.querySelector('.brush-square');
 brushS.addEventListener('click', brushSquare);
 
-let inputColor = document.querySelector('.color-picker');
+const inputColor = document.querySelector('.color-picker');
 inputColor.addEventListener('input', changeChooseColor);
 
-let inputSize = document.querySelector('.pen-size');
+const inputSize = document.querySelector('.pen-size');
 inputSize.addEventListener('input', changeSize);
 
-let cleaner = document.querySelector('.clear');
+const cleaner = document.querySelector('.clear');
 cleaner.addEventListener('click', clearCanvas);
 
-let undo = document.querySelector('.undo');
+const undo = document.querySelector('.undo');
 undo.addEventListener('click', undoLast);
+
+const circle = document.querySelector('.draw-circle');
+circle.addEventListener('click', drawCircle);
+
+const opacity = document.querySelector('.opacity');
+opacity.addEventListener('input', changeOpacity);
 
 //ластик
 // let eraserButton = document.querySelector('.eraser');
 // eraserButton.addEventListener('click', eraserFunction);
 
-let drawSquare = document.querySelector('.draw-square');
+const drawSquare = document.querySelector('.draw-square');
 drawSquare.addEventListener('click', drawSquareFunction);
 
-let bluring = document.querySelector('.blur');
+const bluring = document.querySelector('.blur');
 bluring.addEventListener('input', changeBlur);
 
 canv.addEventListener('mousedown', start, false);

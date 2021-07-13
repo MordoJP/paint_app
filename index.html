@@ -12,23 +12,31 @@
     <div class="container">
         <canvas id="canv"></canvas>
         <div class="tools">
-            <button type="button" class="button undo">Отменить</button>
-            <button type="button" class="button clear">Очистить</button>
-            <button tupe="button" class="button brush-round">Круглая кисть</button>
-            <button tupe="button" class="button brush-square">Квадратная кисть</button>
-            <div class="color-field" style="background: darkred"></div>
-            <div class="color-field" style="background: darkblue"></div>
-            <div class="color-field" style="background: darkgreen"></div>
-            <div class="color-field" style="background: yellow"></div>
-            <div class="color-field" style="background: black"></div>
-            <input type="color" class="color-picker">
-            <div class="size">
-                <p class="text-header">Размер кисти</p>
-                <input type="range" min="1" max="50" class="pen-size" value="3">
+            <div class="tools-box">
+                <button type="button" class="button undo">Отменить</button>
+                <button type="button" class="button clear">Очистить</button>
+                <button type="button" class="button draw-square">Рисовать квадрат</button>
+                <button type="button" class="button eraser">Ластик</button>
+                <button type="button" class="button brush-round">Круглая кисть</button>
+                <button type="button" class="button brush-square">Квадратная кисть</button>
             </div>
-            <div class="blur-box">
-                <p class="text-header">Размытие</p>
-                <input type="range" min="1" max="50" class="blur" value="0">
+            <div class="colors">
+                <div class="color-field" style="background: darkred"></div>
+                <div class="color-field" style="background: darkblue"></div>
+                <div class="color-field" style="background: darkgreen"></div>
+                <div class="color-field" style="background: yellow"></div>
+                <div class="color-field" style="background: black"></div>
+                <input type="color" class="color-picker">
+            </div>
+            <div class="inputs">
+                <div class="size">
+                    <p class="text-header">Размер кисти</p>
+                    <input type="range" min="1" max="50" class="pen-size" value="3">
+                </div>
+                <div class="blur-box">
+                    <p class="text-header">Размытие</p>
+                    <input type="range" min="1" max="50" class="blur" value="0">
+                </div>
             </div>
         </div>
     </div>
